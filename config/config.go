@@ -8,32 +8,33 @@ import (
 )
 
 type rabbitConfiguration struct {
-	Host string `yaml:"host"`
-	Port int `yaml:"port"`
-	User string `yaml:"user"`
-	Pwd string `yaml:"pwd"`
+	Host   string                `yaml:"host"`
+	Port   int                   `yaml:"port"`
+	User   string                `yaml:"user"`
+	Pwd    string                `yaml:"pwd"`
 	Queues []*queueConfiguration `yaml:"queues"`
 }
 type queueConfiguration struct {
 	Type string `yaml:"type"`
 	Name string `yaml:"name"`
-	Qos int `yaml:"qos"`
+	Qos  int    `yaml:"qos"`
 }
 type cacheConfiguration struct {
-	Enable string `yaml:"enable"`
-	Redis redisConfiguration `yaml:"redis"`
+	Enable string             `yaml:"enable"`
+	Redis  redisConfiguration `yaml:"redis"`
 }
 type redisConfiguration struct {
 	Host string `yaml:"host"`
 	Port string `yaml:"port"`
-	Pwd string `yaml:"pwd"`
+	Pwd  string `yaml:"pwd"`
 }
 type AppConfiguration struct {
-	CacheType *cacheConfiguration `yaml:"cache"`
+	CacheType    *cacheConfiguration  `yaml:"cache"`
 	RabbitConfig *rabbitConfiguration `yaml:"rabbit"`
 }
-func(a *AppConfiguration) setConfigs() {
-	yamlFile, err := ioutil.ReadFile("app.yaml")
+
+func (a *AppConfiguration) setConfigs() {
+	yamlFile, err := ioutil.ReadFile("app.yml")
 	if err != nil {
 		log.Println(err)
 		panic("read app.yaml file failed")
@@ -44,15 +45,14 @@ func(a *AppConfiguration) setConfigs() {
 		panic("unmarshal file app.yaml failed")
 	}
 }
+
 var appConfig *AppConfiguration
 var once sync.Once
-func GetSystemConfig() *AppConfiguration{
-	once.Do(func(){
+
+func GetSystemConfig() *AppConfiguration {
+	once.Do(func() {
 		appConfig = &AppConfiguration{}
 		appConfig.setConfigs()
 	})
 	return appConfig
 }
-
-
-
