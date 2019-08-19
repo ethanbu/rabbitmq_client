@@ -1,0 +1,31 @@
+
+cache:
+  enable: redis #redis/memory
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    pwd: cdpredis
+rabbit:
+  host: 127.0.0.1
+  port: 5672
+  user: sme_user
+  pwd: Init1234
+  queues:
+    - type: DataImport
+      name: import_excel
+      qos: 10
+    - type: General
+      name: general_key
+      qos: 50
+    - type: CommonRequest
+      name: common_request
+      qos: 10
+    - type: AttendanceEvaluation
+      name: attendance_evaluation
+      qos: 10
+    - type: PayrollCalculation
+      name: payroll_calc
+      qos: 10
+    - type: EmployeeOnboarding
+      name: employee_onboarding
+      qos: 10
