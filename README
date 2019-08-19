@@ -1,1 +1,5 @@
-# Rabbit Client 
+# Rabbit Client
+## 公共契约
+## 提供断网重连
+## 不同的任务对应不同的Queue
+## Queue 里面的任务都是转发请求，不同的是不同的请求有不同的参数，支持remote wcf的请求
