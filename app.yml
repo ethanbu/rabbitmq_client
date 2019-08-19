@@ -4,11 +4,11 @@ cache:
   redis:
     host: 127.0.0.1
     port: 6379
-    pwd: cdpredis
+    pwd: XXXXXXX
 rabbit:
   host: 127.0.0.1
   port: 5672
-  user: sme_user
+  user: XXXXXXX
   pwd: Init1234
   queues:
     - type: DataImport
