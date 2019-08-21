@@ -36,7 +36,7 @@ func (this *BaseListener) Connect() (<-chan amqp.Delivery) {
 	this.mqChannel, err = this.mqConn.Channel()
 	if err != nil {
 		logHelper.FailOnError(prefix, err, "failed to create mq channel")
-		this.mqConn.Close()
+		this.Close()
 		return nil
 	}
 	q, err := this.mqChannel.QueueDeclare(
@@ -48,14 +48,12 @@ func (this *BaseListener) Connect() (<-chan amqp.Delivery) {
 		nil,
 	)
 	if err != nil {
-		this.mqChannel.Close()
-		this.mqConn.Close()
+		this.Close()
 		return nil
 	}
 	err = this.mqChannel.Qos(this.Qos, 0, true)
 	if err != nil {
-		this.mqChannel.Close()
-		this.mqConn.Close()
+		this.Close()
 		return nil
 	}
 	msgs, err := this.mqChannel.Consume(q.Name,
@@ -67,8 +65,7 @@ func (this *BaseListener) Connect() (<-chan amqp.Delivery) {
 		nil,
 		)
 	if err != nil {
-		this.mqChannel.Close()
-		this.mqConn.Close()
+		this.Close()
 		return nil
 	}
 	return msgs
@@ -100,4 +97,13 @@ func (this *BaseListener) ListenByConsume(doWork func(msgs amqp.Delivery) error,
 		}
 		<-c
 	return nil
+}
+
+func(this *BaseListener) Close(){
+	if this.mqChannel != nil {
+		this.mqChannel.Close()
+	}
+	if this.mqConn != nil {
+		this.mqConn.Close()
+	}
 }
